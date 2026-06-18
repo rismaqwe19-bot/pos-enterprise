@@ -8,12 +8,12 @@ router.get('/daily/today', auth, async (req, res) => {
   try {
     const result = await db.query(
       `SELECT 
-        COALESCE(COUNT(DISTINCT t.id), 0) as total_transactions,
-        COALESCE(SUM(t.total_amount), 0) as total_sales,
-        COALESCE(SUM(t.item_count), 0) as total_items_sold,
-        COALESCE(COUNT(DISTINCT t.cashier_id), 0) as total_cashiers
-       FROM transactions t
-       WHERE DATE(t.transaction_date) = CURRENT_DATE`
+        COUNT(*) as total_transactions,
+        COALESCE(SUM(total_amount), 0) as total_sales,
+        COALESCE(SUM(item_count), 0) as total_items_sold,
+        COALASE(COUNT(DISTINCT user_id), 0) as total_cashiers
+       FROM transactions
+       WHERE DATE(transaction_date) = CURRENT_DATE`
     );
 
     const summary = result.rows[0];

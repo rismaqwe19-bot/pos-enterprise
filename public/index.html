@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Dashboard - POS Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <h1>POS ENTERPRISE</h1>
+      <span class="navbar-subtitle">Point of Sale System</span>
+    </div>
+    <div class="navbar-menu">
+      <a href="#" class="nav-link active" data-page="dashboard">Dashboard</a>
+      <a href="#" class="nav-link" data-page="sales">Penjualan</a>
+      <a href="#" class="nav-link" data-page="products">Produk</a>
+      <a href="#" class="nav-link" data-page="history">Riwayat</a>
+      <a href="#" class="nav-link" data-page="reports">Laporan</a>
+    </div>
+    <div class="navbar-user">
+      <span id="userName" class="user-name">User</span>
+      <button id="logoutBtn" class="btn btn-small btn-danger">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Dashboard Page -->
+    <section id="dashboardPage" class="page active">
+      <h2>Dashboard</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Transaksi (Hari Ini)</div>
+          <div class="stat-value" id="statTransactions">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Penjualan</div>
+          <div class="stat-value" id="statSales">Rp 0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Item Terjual</div>
+          <div class="stat-value" id="statItems">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Produk Tersedia</div>
+          <div class="stat-value" id="statProducts">0</div>
+        </div>
+      </div>
+
+      <div class="dashboard-section">
+        <h3>Produk Terlaris (Hari Ini)</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nama Produk</th>
+              <th>Terjual</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+          <tbody id="topProductsBody">
+            <tr><td colspan="3" class="text-center">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dashboard-section">
+        <h3>Metode Pembayaran</h3>
+        <div id="paymentBreakdown" class="payment-breakdown"></div>
+      </div>
+
+      <button id="refreshDashboard" class="btn btn-primary">Refresh</button>
+    </section>
+
+    <!-- Sales Page -->
+    <section id="salesPage" class="page hidden">
+      <h2>Penjualan</h2>
+      
+      <div class="sales-container">
+        <!-- Product Selection -->
+        <div class="sales-left">
+          <div class="search-box">
+            <input 
+              type="text" 
+              id="productSearch" 
+              placeholder="Cari produk..."
+              class="input-search"
+            >
+          </div>
+          
+          <div id="productList" class="product-list">
+            <!-- Products akan di-load dari API -->
+          </div>
+        </div>
+
+        <!-- Cart -->
+        <div class="sales-right">
+          <h3>Keranjang</h3>
+          
+          <table class="table table-cart">
+            <thead>
+              <tr>
+                <th>Produk</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="cartItems">
+              <tr><td colspan="5" class="text-center">Keranjang kosong</td></tr>
+            </tbody>
+          </table>
+
+          <div class="cart-summary">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="subtotal">Rp 0</span>
+            </div>
+            <div class="summary-row">
+              <span>Diskon</span>
+              <input type="number" id="discountAmount" placeholder="0" class="input-small">
+            </div>
+            <div class="summary-row">
+              <span>Pajak</span>
+              <input type="number" id="taxAmount" placeholder="0" class="input-small">
+            </div>
+            <div class="summary-row total">
+              <span>TOTAL</span>
+              <span id="totalAmount">Rp 0</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="paymentMethod">Metode Pembayaran</label>
+            <select id="paymentMethod" class="input">
+              <option value="cash">Tunai</option>
+              <option value="card">Kartu</option>
+              <option value="transfer">Transfer</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Catatan (opsional)</label>
+            <textarea id="notes" class="input" placeholder="Catatan transaksi..."></textarea>
+          </div>
+
+          <button id="checkoutBtn" class="btn btn-success btn-block">
+            Bayar & Simpan Transaksi
+          </button>
+          <button id="clearCartBtn" class="btn btn-secondary btn-block">
+            Batal
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Page -->
+    <section id="productsPage" class="page hidden">
+      <h2>Manajemen Produk</h2>
+      
+      <button id="newProductBtn" class="btn btn-primary">+ Produk Baru</button>
+
+      <div class="search-box" style="margin-top: 20px;">
+        <input 
+          type="text" 
+          id="productSearchManage" 
+          placeholder="Cari produk..."
+          class="input-search"
+        >
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Barcode</th>
+            <th>Harga</th>
+            <th>Stock</th>
+            <th>Kategori</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="productsTableBody">
+          <tr><td colspan="6" class="text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- History Page -->
+    <section id="historyPage" class="page hidden">
+      <h2>Riwayat Transaksi</h2>
+      
+      <div class="filter-row">
+        <input type="date" id="historyStartDate" class="input">
+        <span>sampai</span>
+        <input type="date" id="historyEndDate" class="input">
+        <button id="filterHistoryBtn" class="btn btn-primary">Filter</button>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tanggal</th>
+            <th>Total</th>
+            <th>Items</th>
+            <th>Metode</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="historyTableBody">
+          <tr><td colspan="6" class="text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Reports Page -->
+    <section id="reportsPage" class="page hidden">
+      <h2>Laporan</h2>
+      
+      <div class="reports-grid">
+        <div class="report-card">
+          <h3>Total Transaksi Hari Ini</h3>
+          <div class="report-value" id="reportTodayTx">0</div>
+        </div>
+        <div class="report-card">
+          <h3>Total Penjualan Hari Ini</h3>
+          <div class="report-value" id="reportTodaySales">Rp 0</div>
+        </div>
+        <div class="report-card">
+          <h3>Total Users</h3>
+          <div class="report-value" id="reportTotalUsers">0</div>
+        </div>
+        <div class="report-card">
+          <h3>Total Produk</h3>
+          <div class="report-value" id="reportTotalProducts">0</div>
+        </div>
+      </div>
+
+      <div class="report-section">
+        <h3>Laporan Periode</h3>
+        <div class="filter-row">
+          <input type="date" id="reportStartDate" class="input">
+          <span>sampai</span>
+          <input type="date" id="reportEndDate" class="input">
+          <button id="generateReportBtn" class="btn btn-primary">Generate</button>
+        </div>
+        
+        <table class="table" id="reportTable" style="display: none;">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Transaksi</th>
+              <th>Penjualan</th>
+              <th>Items</th>
+              <th>Rata-rata</th>
+            </tr>
+          </thead>
+          <tbody id="reportTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal for Product Form -->
+  <div id="productModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="productModalTitle">Produk Baru</h3>
+        <button class="close-btn">&times;</button>
+      </div>
+      <form id="productForm">
+        <div class="form-group">
+          <label>Nama Produk</label>
+          <input type="text" id="productName" required>
+        </div>
+        <div class="form-group">
+          <label>Barcode</label>
+          <input type="text" id="productBarcode">
+        </div>
+        <div class="form-group">
+          <label>Kategori</label>
+          <input type="text" id="productCategory">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Harga</label>
+            <input type="number" id="productPrice" required>
+          </div>
+          <div class="form-group">
+            <label>Harga Beli</label>
+            <input type="number" id="productCost">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stock</label>
+            <input type="number" id="productStock" required>
+          </div>
+          <div class="form-group">
+            <label>Unit</label>
+            <input type="text" id="productUnit" value="pcs">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+          <button type="button" class="btn btn-secondary close-modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="spinner hidden"></div>
+
+  <!-- Messages -->
+  <div id="messages" class="messages-container"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/pos.js"></script>
+</body>
+</html>

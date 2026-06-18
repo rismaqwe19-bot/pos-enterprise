@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Enterprise - Login</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-header">
+        <h1>POS ENTERPRISE</h1>
+        <p>Point of Sale System</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form">
+        <h2>Masuk</h2>
+        
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <input 
+            type="text" 
+            id="loginUsername" 
+            placeholder="Masukkan username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input 
+            type="password" 
+            id="loginPassword" 
+            placeholder="Masukkan password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          Masuk
+        </button>
+
+        <div class="form-divider">atau</div>
+
+        <button type="button" class="btn btn-secondary btn-block" id="toggleRegister">
+          Buat Akun Baru
+        </button>
+
+        <div id="loginMessage" class="message hidden"></div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" class="auth-form hidden">
+        <h2>Daftar Akun</h2>
+        
+        <div class="form-group">
+          <label for="regUsername">Username</label>
+          <input 
+            type="text" 
+            id="regUsername" 
+            placeholder="Pilih username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Email</label>
+          <input 
+            type="email" 
+            id="regEmail" 
+            placeholder="Email Anda"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="regFullName">Nama Lengkap</label>
+          <input 
+            type="text" 
+            id="regFullName" 
+            placeholder="Nama lengkap Anda"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Password</label>
+          <input 
+            type="password" 
+            id="regPassword" 
+            placeholder="Minimal 6 karakter"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="regPasswordConfirm">Konfirmasi Password</label>
+          <input 
+            type="password" 
+            id="regPasswordConfirm" 
+            placeholder="Ulangi password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          Daftar
+        </button>
+
+        <button type="button" class="btn btn-secondary btn-block" id="toggleLogin">
+          Kembali ke Login
+        </button>
+
+        <div id="registerMessage" class="message hidden"></div>
+      </form>
+    </div>
+
+    <div class="login-footer">
+      <p>© 2024 POS Enterprise. All rights reserved.</p>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/login.js"></script>
+</body>
+</html>
