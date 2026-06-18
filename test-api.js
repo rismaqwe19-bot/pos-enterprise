@@ -135,8 +135,8 @@ async function runTests() {
 
   await runTest('Register new user', async () => {
     const res = await makeRequest('POST', '/auth/register', {
-      username: 'testuser_' + Date.now(),
-      password: 'testpass123',
+      username: 'myuser_' + Date.now(),
+      password: 'mypass123',
       email: `test_${Date.now()}@pos.local`,
       fullName: 'Test User',
       role: 'cashier'
@@ -148,8 +148,8 @@ async function runTests() {
 
   await runTest('Login with credentials', async () => {
     const res = await makeRequest('POST', '/auth/login', {
-      username: 'testuser',
-      password: 'testpass123'
+      username: 'myuser',
+      password: 'mypass123'
     });
     assert([200, 401].includes(res.status), `Expected 200 or 401, got ${res.status}`);
     if (res.status === 200) {
