@@ -1,1 +1,1 @@
-tugas pos (poin on salery)
+web pos (poin on salery)
